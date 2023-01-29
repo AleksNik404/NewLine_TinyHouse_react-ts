@@ -1,25 +1,15 @@
-import express from 'express';
+import { ApolloServer } from "@apollo/server";
+import { expressMiddleware } from "@apollo/server/express4";
 
-import { listings } from './listings';
+import express from "express";
+import { schema } from "./graphql";
 
 const app = express();
 const port = 9000;
+const server = new ApolloServer({ schema });
 
-app.use(express.json());
+await server.start();
+
+app.use("/api", express.json(), expressMiddleware(server));
+
 app.listen(port);
-
-app.get('/listings', (req, res) => {
-  res.send(listings);
-});
-
-// Что за ужас в курсе
-app.post('/delete-listings', (req, res) => {
-  const id: string = req.body.id;
-
-  for (let i = 0; i < listings.length; i++) {
-    if (listings[i].id === id) {
-      return res.send(listings.splice(i, 1));
-    }
-  }
-  return res.send('failed to delete listing');
-});

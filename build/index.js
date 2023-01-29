@@ -1,12 +1,13 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
-const app = (0, express_1.default)();
+import { ApolloServer } from "@apollo/server";
+import { expressMiddleware } from "@apollo/server/express4";
+import express from "express";
+import { schema } from "./graphql";
+const app = express();
 const port = 9000;
-app.get('/', (req, res) => {
-    res.send('Hellooo my demon');
-});
+const server = new ApolloServer({ schema });
+// server.applyMiddleware({ app, path: "/api" });
+await server.start();
+app.use("/api", expressMiddleware(server));
 app.listen(port);
+// { typeDefs: "", resolvers: {} }
+// // "start": "nodemon src/index.ts",
