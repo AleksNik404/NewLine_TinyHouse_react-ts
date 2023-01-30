@@ -1,4 +1,3 @@
-import { listings } from "./listings";
 import {
   GraphQLObjectType,
   GraphQLNonNull,
@@ -9,6 +8,7 @@ import {
   GraphQLFloat,
   GraphQLSchema,
 } from "graphql";
+import { listings } from "../listings";
 
 const Listing = new GraphQLObjectType({
   name: "Listing",
@@ -43,7 +43,7 @@ const mutation = new GraphQLObjectType({
       args: {
         id: { type: new GraphQLNonNull(GraphQLID) },
       },
-      resolve: (_root, { id }, contextValue, info) => {
+      resolve: (_root, { id }) => {
         const deleteIndex = listings.findIndex((item) => item.id === id);
 
         if (deleteIndex !== -1) {
