@@ -1,34 +1,40 @@
-import * as dotenv from "dotenv"; // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
+import * as dotenv from "dotenv";
 dotenv.config();
 
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
-import { expressMiddleware } from "@apollo/server/express4";
 import express from "express";
+// import { expressMiddleware } from "@apollo/server/express4";
+// import http from "http";
+// import cors from "cors";
 import { Application } from "express-serve-static-core";
 
 import { resolvers, typeDefs } from "./graphql";
-import { run } from "./database";
+import { connectDB } from "./database";
 
 const mount = async (app: Application) => {
-  const db = await run();
+  // const httpServer = http.createServer(app);
+
+  const db = await connectDB();
   const server = new ApolloServer({
     typeDefs,
     resolvers,
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { url } = await startStandaloneServer(server, {
+    context: async () => ({ db }),
     listen: { port: Number(process.env.PORT) },
   });
   // await server.start();
 
-  app.use(
-    "/api",
-    express.json(),
-    expressMiddleware(server, {
-      context: async () => ({ db }),
-    })
-  );
+  // app.use(
+  //   "/api",
+  //   express.json(),
+  //   expressMiddleware(server, {
+  //     context: async () => ({ db }),
+  //   })
+  // );
 };
 
 mount(express());

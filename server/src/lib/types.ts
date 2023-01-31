@@ -4,9 +4,11 @@ export interface Listing {
   _id: ObjectId;
   title: string;
   image: string;
+  address: string;
   price: number;
   numOfGuests: number;
-  numOfBed: number;
+  numOfBeds: number;
+  numOfBaths: number;
   rating: number;
 }
 

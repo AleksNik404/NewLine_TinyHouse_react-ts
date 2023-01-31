@@ -1,4 +1,4 @@
-import * as dotenv from "dotenv"; // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
+import * as dotenv from "dotenv";
 dotenv.config();
 
 import { MongoClient } from "mongodb";
@@ -7,7 +7,7 @@ import { Database } from "../lib/types";
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_USER_PASSWORD}@${process.env.DB_CLUSTER}.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri);
 
-export async function run(): Promise<Database> {
+export async function connectDB(): Promise<Database> {
   try {
     // Connect the client to the server (optional starting in v4.7)
     await client.connect();
