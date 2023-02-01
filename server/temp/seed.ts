@@ -7,8 +7,6 @@ dotenv.config();
 
 const seed = async () => {
   try {
-    console.log("awdwad");
-
     const db = await connectDB();
     const listings: Listing[] = [
       {

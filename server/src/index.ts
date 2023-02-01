@@ -12,6 +12,7 @@ import { Application } from "express-serve-static-core";
 import { resolvers, typeDefs } from "./graphql";
 import { connectDB } from "./database";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const mount = async (app: Application) => {
   // const httpServer = http.createServer(app);
 
