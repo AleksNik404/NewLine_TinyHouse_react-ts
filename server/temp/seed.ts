@@ -46,8 +46,7 @@ const seed = async () => {
         rating: 3,
       },
     ];
-    console.log(db);
-    console.log(`[seed] : success`);
+    console.info(`[seed] : success`);
 
     for (const oneListing of listings) {
       await db.listings.insertOne(oneListing);

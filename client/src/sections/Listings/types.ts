@@ -1,4 +1,4 @@
-type Listings = {
+export type Listing = {
   id: string;
   title: string;
   image: string;
@@ -11,11 +11,11 @@ type Listings = {
 };
 
 export interface ListingsData {
-  listings: Listings[];
+  listings: Listing[];
 }
 
 export interface DeleteListingData {
-  deleteListing: Listings;
+  deleteListing: Listing;
 }
 
 export interface DeleteListingVariables {
