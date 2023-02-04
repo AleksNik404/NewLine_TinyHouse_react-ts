@@ -3,7 +3,8 @@ import { InMemoryCache } from "@apollo/client/cache";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import reportWebVitals from "./reportWebVitals";
-import { Listings } from "./sections";
+
+import App from "./App";
 import "./styles/index.css";
 
 const root = ReactDOM.createRoot(
@@ -18,7 +19,7 @@ const client = new ApolloClient({
 root.render(
   <React.StrictMode>
     <ApolloProvider client={client}>
-      <Listings title="TinyHouse Listings" />
+      <App />
     </ApolloProvider>
   </React.StrictMode>
 );
