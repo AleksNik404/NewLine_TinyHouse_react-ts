@@ -1,4 +1,4 @@
 import { mergeResolvers } from "@graphql-tools/merge";
-import { listingResolvers } from "./Listing";
+import { viewerResolvers } from "./Viewer";
 
-export const resolvers = mergeResolvers([listingResolvers]);
+export const resolvers = mergeResolvers([viewerResolvers]);
