@@ -17,6 +17,5 @@ export const connectDB = async (): Promise<Database> => {
     bookings: db.collection<Booking>("listings"),
     listings: db.collection<Listing>("listings"),
     users: db.collection<User>("users"),
-    // books: db.collection<User>("books"),
   };
 };

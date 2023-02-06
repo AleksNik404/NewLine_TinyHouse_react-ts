@@ -1,6 +1,6 @@
-import { gql } from "@apollo/client";
+import { graphql } from "../../../gql";
 
-export const LOG_IN = gql`
+export const LOG_IN = graphql(`
   mutation LogIn($input: LogInInput) {
     logIn(input: $input) {
       id
@@ -10,4 +10,4 @@ export const LOG_IN = gql`
       didRequest
     }
   }
-`;
+`);

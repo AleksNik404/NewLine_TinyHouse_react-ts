@@ -1,6 +1,7 @@
 import { Layout } from "antd";
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Viewer } from "./lib/gql/graphql";
 import {
   Home,
   Host,
@@ -11,7 +12,17 @@ import {
   User,
 } from "./sections";
 
+const initialViewer: Viewer = {
+  id: null,
+  token: null,
+  avatar: null,
+  hasWallet: null,
+  didRequest: false,
+};
+
 const App = () => {
+  const [viewer, setViewer] = useState<Viewer>(initialViewer);
+
   return (
     <Router>
       <Layout id="app">
@@ -20,7 +31,7 @@ const App = () => {
           <Route path="/host" element={<Host />} />
           <Route path="/listing/:id" element={<Listing />} />
           <Route path="listings/:location?" element={<Listings />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<Login setViewer={setViewer} />} />
           <Route path="user/:id" element={<User />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

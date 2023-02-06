@@ -1,6 +1,6 @@
-import { gql } from "@apollo/client";
+import { graphql } from "../../../gql";
 
-export const LOG_OUT = gql`
+export const LOG_OUT = graphql(`
   mutation LogOut {
     logOut {
       id
@@ -10,4 +10,4 @@ export const LOG_OUT = gql`
       didRequest
     }
   }
-`;
+`);
