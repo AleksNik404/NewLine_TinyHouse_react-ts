@@ -50,6 +50,7 @@ const Login = ({ setViewer }: Props) => {
   useEffect(() => {
     if (logInData && logInData.logIn) {
       console.log(logInData, "logInData");
+
       const { id: viewerId } = logInData.logIn;
 
       navigate(`/user/${viewerId}`);

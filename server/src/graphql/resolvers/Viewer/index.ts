@@ -1,5 +1,7 @@
 import crypto from "crypto";
-import { IResolvers } from "@graphql-tools/utils";
+import { Request, Response } from "express";
+import { cookieOptions } from "../../..";
+// import { IResolvers } from "@graphql-tools/utils";
 import { Google } from "../../../lib/api/Google";
 import { Database, User, Viewer } from "../../../lib/types";
 import { LogInArgs } from "./types";
@@ -7,7 +9,8 @@ import { LogInArgs } from "./types";
 const logInViaGoogle = async (
   code: string,
   token: string,
-  db: Database
+  db: Database,
+  res: Response
 ): Promise<User | undefined> => {
   const { user } = await Google.logIn(code);
 
@@ -73,11 +76,38 @@ const logInViaGoogle = async (
     viewer = await db.users.findOne({ _id: insertedId });
   }
 
-  // мой костыль. null убирает
+  res.cookie("viewer", userId, {
+    ...cookieOptions,
+    maxAge: 365 * 24 * 60 * 60 * 1000,
+  });
+  // мой костыль. null убирает. В курсе написах так код, подбивать не собираюсь.
   if (viewer) return viewer;
 };
 
-export const viewerResolvers: IResolvers = {
+const logInViaCookie = async (
+  token: string,
+  db: Database,
+  req: Request,
+  res: Response
+): Promise<User | undefined> => {
+  const updateRes = await db.users.findOneAndUpdate(
+    {
+      _id: req.signedCookies.viewer,
+    },
+    { $set: { token } }
+  );
+
+  const viewer = updateRes.value;
+
+  if (!viewer) {
+    res.clearCookie("viewer", cookieOptions);
+  } else {
+    return viewer;
+  }
+};
+
+// :IResolvers удалил возвращаемый тип, мб устарело
+export const viewerResolvers = {
   Query: {
     authUrl: (): string => {
       try {
@@ -92,15 +122,15 @@ export const viewerResolvers: IResolvers = {
     logIn: async (
       _root: undefined,
       { input }: LogInArgs,
-      { db }: { db: Database }
+      { db, req, res }: { db: Database; req: Request; res: Response }
     ): Promise<Viewer> => {
       try {
         const code = input ? input.code : null;
         const token = crypto.randomBytes(16).toString("hex");
 
         const viewer: User | undefined = code
-          ? await logInViaGoogle(code, token, db)
-          : undefined;
+          ? await logInViaGoogle(code, token, db, res)
+          : await logInViaCookie(token, db, req, res);
 
         if (!viewer) return { didRequest: true };
         return {
@@ -115,15 +145,20 @@ export const viewerResolvers: IResolvers = {
       }
     },
 
-    logOut: (): Viewer => {
+    logOut: (
+      _root: undefined,
+      _args: unknown,
+      { res }: { res: Response }
+    ): Viewer => {
       try {
-        // return "haha";
+        res.clearCookie("viewer", cookieOptions);
         return { didRequest: true };
       } catch (error) {
         throw new Error(`Failed to log out: ${error}`);
       }
     },
   },
+
   Viewer: {
     id: (viewer: Viewer): string | undefined => {
       return viewer._id;

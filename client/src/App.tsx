@@ -1,16 +1,10 @@
-import { Layout } from "antd";
 import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Affix, Layout } from "antd";
+
 import { Viewer } from "./lib/gql/graphql";
-import {
-  Home,
-  Host,
-  Listing,
-  Listings,
-  Login,
-  NotFound,
-  User,
-} from "./sections";
+import { AppHeader, Home, Host, Listing } from "./sections";
+import { Listings, Login, NotFound, User } from "./sections";
 
 const initialViewer: Viewer = {
   id: null,
@@ -26,6 +20,9 @@ const App = () => {
   return (
     <Router>
       <Layout id="app">
+        <Affix offsetTop={0} className="app__affix-header">
+          <AppHeader viewer={viewer} setViewer={setViewer} />
+        </Affix>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/host" element={<Host />} />
