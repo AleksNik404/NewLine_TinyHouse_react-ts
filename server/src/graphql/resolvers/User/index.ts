@@ -4,6 +4,4 @@ export const userResolvers = {
       return "Query.user";
     },
   },
-  Mutation: {},
-  User: {},
 };

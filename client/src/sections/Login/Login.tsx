@@ -1,7 +1,7 @@
 import { useApolloClient, useMutation } from "@apollo/client";
 import { Card, Layout, Spin, Typography } from "antd";
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { ErrorBanner } from "../../lib/components";
 import { Viewer } from "../../lib/gql/graphql";
 import { LOG_IN } from "../../lib/graphql/mutations/Login/Login";
@@ -48,16 +48,6 @@ const Login = ({ setViewer }: Props) => {
     }
   }, []);
 
-  useEffect(() => {
-    if (logInData && logInData.logIn) {
-      console.log(logInData, "logInData");
-
-      const { id: viewerId } = logInData.logIn;
-
-      navigate(`/user/${viewerId}`);
-    }
-  }, [logInData, navigate]);
-
   const handleAuthorize = async () => {
     try {
       const { data } = await client.query({
@@ -72,9 +62,10 @@ const Login = ({ setViewer }: Props) => {
     }
   };
 
-  // const logInErrorBannerElement = logInError ? (
-  //   <ErrorBanner description="Sorry! We weren`t able to log you in. Please try again later!" />
-  // ) : null;
+  if (logInData && logInData.logIn) {
+    const { id: viewerId } = logInData.logIn;
+    return <Navigate to={`/user/${viewerId}`} />;
+  }
 
   if (logInLoading) {
     return (
