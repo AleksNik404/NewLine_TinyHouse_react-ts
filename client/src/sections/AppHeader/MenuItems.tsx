@@ -10,8 +10,6 @@ import {
   displaySuccessNotification,
 } from "../../lib/utils/utils";
 
-const { Item, SubMenu } = Menu;
-
 type MenuItem = Required<MenuProps>["items"][number];
 
 function getItem(
@@ -38,6 +36,7 @@ const MenuItems = ({ viewer, setViewer }: Props) => {
     onCompleted: (data) => {
       if (data?.logOut) {
         setViewer(data.logOut);
+        sessionStorage.removeItem("token");
         displaySuccessNotification("You`ve successfully logged out!");
       }
     },

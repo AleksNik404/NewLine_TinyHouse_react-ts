@@ -14,6 +14,7 @@ export const typeDefs = gql`
 
   type Query {
     authUrl: String!
+    user: String!
   }
 
   # Заменил String на Viewer

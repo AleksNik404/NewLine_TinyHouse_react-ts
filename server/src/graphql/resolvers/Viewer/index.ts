@@ -1,6 +1,5 @@
 import crypto from "crypto";
 import { Request, Response } from "express";
-import { IncomingMessage, ServerResponse } from "http";
 import { cookieOptions } from "../../..";
 // import { IResolvers } from "@graphql-tools/utils";
 import { Google } from "../../../lib/api/Google";
@@ -82,12 +81,6 @@ const logInViaGoogle = async (
     maxAge: 365 * 24 * 60 * 60 * 1000,
   });
 
-  // res.setHeader("Set-Cookie", [
-  //   `viewer=${userId}; HttpOnly; Max-Age=${
-  //     365 * 24 * 60 * 60 * 1000
-  //   }; Secure=True;`,
-  // ]);
-
   // мой костыль. null убирает. В курсе написах так код, подбивать не собираюсь.
   if (viewer) return viewer;
 };
@@ -135,7 +128,6 @@ export const viewerResolvers = {
       try {
         const code = input ? input.code : null;
         const token = crypto.randomBytes(16).toString("hex");
-        console.log("awdawdwa");
 
         const viewer: User | undefined = code
           ? await logInViaGoogle(code, token, db, res)
