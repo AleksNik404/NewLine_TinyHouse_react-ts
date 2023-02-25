@@ -1,11 +1,11 @@
 import { useApolloClient, useMutation } from "@apollo/client";
 import { Card, Layout, Spin, Typography } from "antd";
 import React, { useEffect } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { ErrorBanner } from "../../lib/components";
 import { Viewer } from "../../lib/gql/graphql";
 import { LOG_IN } from "../../lib/graphql/mutations/Login/Login";
-import { AUTH_URL } from "../../lib/graphql/queries/AuthUrl/Auth";
+import { AUTH_URL } from "../../lib/graphql/queries/Auth";
 import {
   displayErrorMessage,
   displaySuccessNotification,
@@ -21,7 +21,6 @@ interface Props {
 
 const Login = ({ setViewer }: Props) => {
   const client = useApolloClient();
-  const navigate = useNavigate();
 
   const [logIn, { data: logInData, loading: logInLoading, error: logInError }] =
     useMutation(LOG_IN, {

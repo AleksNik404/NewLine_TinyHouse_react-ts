@@ -5,4 +5,3 @@
 //   hasWallet: boolean | null;
 //   didRequest: boolean;
 // }
-export const a = 23;

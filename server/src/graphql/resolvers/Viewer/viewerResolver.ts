@@ -127,7 +127,11 @@ export const viewerResolvers = {
     ): Promise<Viewer> => {
       try {
         const code = input ? input.code : null;
-        const token = crypto.randomBytes(16).toString("hex");
+
+        // Сделал проверку, ибо был баг не знаю из-за чего, что токен с реквеста потом не учитывался, и проверку на поиск в БД не проходило
+        // Толком не знаю подводных, мб не безопастно.
+        const token =
+          req.get("X-CSRF-TOKEN") || crypto.randomBytes(16).toString("hex");
 
         const viewer: User | undefined = code
           ? await logInViaGoogle(code, token, db, res)

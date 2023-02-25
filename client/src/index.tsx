@@ -1,8 +1,7 @@
-import { ApolloClient, ApolloProvider } from "@apollo/client";
-import { InMemoryCache } from "@apollo/client/cache";
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { setContext } from "@apollo/client/link/context";
+import { ApolloClient, ApolloProvider } from "@apollo/client";
+import { InMemoryCache } from "@apollo/client/cache";
 
 import App from "./App";
 import "./styles/index.css";

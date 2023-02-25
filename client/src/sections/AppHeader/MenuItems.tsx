@@ -56,7 +56,11 @@ const MenuItems = ({ viewer, setViewer }: Props) => {
     ? [
         getItem(<Link to="/host">Host</Link>, "/host", <HomeOutlined />),
         getItem(<Avatar src={viewer.avatar} />, "SubMenu", null, [
-          getItem("Profile", "/user", <UserOutlined />),
+          getItem(
+            <Link to={`/user/${viewer.id}`}>Profile</Link>,
+            "/user",
+            <UserOutlined />
+          ),
           getItem("Log out", "/logout", <LogoutOutlined />),
         ]),
       ]

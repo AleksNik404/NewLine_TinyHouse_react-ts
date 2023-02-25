@@ -1,5 +1,12 @@
 import { mergeResolvers } from "@graphql-tools/merge";
-import { userResolvers } from "./User";
-import { viewerResolvers } from "./Viewer";
+import { bookingResolvers } from "./Bookings/bookingResolvers";
+import { listingResolvers } from "./Listing/listingResolver";
+import { userResolvers } from "./User/userResolver";
+import { viewerResolvers } from "./Viewer/viewerResolver";
 
-export const resolvers = mergeResolvers([viewerResolvers, userResolvers]);
+export const resolvers = mergeResolvers([
+  viewerResolvers,
+  userResolvers,
+  listingResolvers,
+  bookingResolvers,
+]);

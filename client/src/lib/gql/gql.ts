@@ -16,6 +16,7 @@ const documents = {
     "\n  mutation LogOut {\n    logOut {\n      id\n      token\n      avatar\n      hasWallet\n      didRequest\n    }\n  }\n": types.LogOutDocument,
     "\n  mutation LogIn($input: LogInInput) {\n    logIn(input: $input) {\n      id\n      token\n      avatar\n      hasWallet\n      didRequest\n    }\n  }\n": types.LogInDocument,
     "\n  query AuthUql {\n    authUrl\n  }\n": types.AuthUqlDocument,
+    "\n  query User($id: ID!, $bookingsPage: Int!, $listingsPage: Int!, $limit: Int!) {\n    user(id: $id) {\n      id\n      name\n      avatar\n      contact\n      hasWallet\n      income\n      bookings(limit: $limit, page: $bookingsPage) {\n        total\n        result {\n          id\n          listing {\n            id\n            title\n            image\n            address\n            price\n            numOfGuests\n          }\n          checkIn\n          checkOut\n        }\n      }\n      listings(limit: $limit, page: $listingsPage) {\n        total\n        result {\n          id\n          title\n          image\n          address\n          price\n          numOfGuests\n        }\n      }\n    }\n  }\n": types.UserDocument,
 };
 
 /**
@@ -44,6 +45,10 @@ export function graphql(source: "\n  mutation LogIn($input: LogInInput) {\n    l
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  query AuthUql {\n    authUrl\n  }\n"): (typeof documents)["\n  query AuthUql {\n    authUrl\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query User($id: ID!, $bookingsPage: Int!, $listingsPage: Int!, $limit: Int!) {\n    user(id: $id) {\n      id\n      name\n      avatar\n      contact\n      hasWallet\n      income\n      bookings(limit: $limit, page: $bookingsPage) {\n        total\n        result {\n          id\n          listing {\n            id\n            title\n            image\n            address\n            price\n            numOfGuests\n          }\n          checkIn\n          checkOut\n        }\n      }\n      listings(limit: $limit, page: $listingsPage) {\n        total\n        result {\n          id\n          title\n          image\n          address\n          price\n          numOfGuests\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query User($id: ID!, $bookingsPage: Int!, $listingsPage: Int!, $limit: Int!) {\n    user(id: $id) {\n      id\n      name\n      avatar\n      contact\n      hasWallet\n      income\n      bookings(limit: $limit, page: $bookingsPage) {\n        total\n        result {\n          id\n          listing {\n            id\n            title\n            image\n            address\n            price\n            numOfGuests\n          }\n          checkIn\n          checkOut\n        }\n      }\n      listings(limit: $limit, page: $listingsPage) {\n        total\n        result {\n          id\n          title\n          image\n          address\n          price\n          numOfGuests\n        }\n      }\n    }\n  }\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

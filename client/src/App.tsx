@@ -20,6 +20,7 @@ const initialViewer: Viewer = {
 const App = () => {
   const [viewer, setViewer] = useState(initialViewer);
   const [logIn, { error }] = useMutation(LOG_IN, {
+    // После запроса вытаскиваем данные пользователя
     onCompleted: (data) => {
       if (data && data.logIn) {
         setViewer(data.logIn);
@@ -33,10 +34,12 @@ const App = () => {
 
   const logInRef = useRef(logIn);
 
+  // При рендеринге, авторизация с проверкой токена из куков или гугл сервис
   useEffect(() => {
     logInRef.current();
   }, []);
 
+  // Пока идет запрос, отображать крутящийся спинер и шапку сайта
   if (!viewer.didRequest && !error) {
     return (
       <Layout className="app-skeleton" id="app">
@@ -65,7 +68,7 @@ const App = () => {
           <Route path="/listing/:id" element={<Listing />} />
           <Route path="listings/:location?" element={<Listings />} />
           <Route path="/login" element={<Login setViewer={setViewer} />} />
-          <Route path="user/:id" element={<User />} />
+          <Route path="user/:id" element={<User viewer={viewer} />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Layout>

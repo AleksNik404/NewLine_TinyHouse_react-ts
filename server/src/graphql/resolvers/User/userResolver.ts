@@ -70,7 +70,6 @@ export const userResolvers = {
 
         data.total = await cursor.count();
         data.result = await cursor.toArray();
-        console.log(data);
 
         return data;
       } catch (error) {
@@ -97,7 +96,6 @@ export const userResolvers = {
 
         data.total = await cursor.count();
         data.result = await cursor.toArray();
-        console.log(data);
 
         return data;
       } catch (error) {
