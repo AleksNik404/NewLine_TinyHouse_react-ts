@@ -6,6 +6,7 @@ import { Google } from "../../../lib/api/Google";
 import { Database, User, Viewer } from "../../../lib/types";
 import { LogInArgs } from "./types";
 
+// Google авторизация
 const logInViaGoogle = async (
   code: string,
   token: string,
@@ -85,6 +86,7 @@ const logInViaGoogle = async (
   if (viewer) return viewer;
 };
 
+// Когда уже есть куки, которые приходят в реквестве с клиента
 const logInViaCookie = async (
   token: string,
   db: Database,

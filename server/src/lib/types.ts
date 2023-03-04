@@ -41,27 +41,31 @@ export interface Listing {
   host: string;
   type: ListingType;
   address: string;
+
   country: string;
   admin: string;
+
   city: string;
   bookings: ObjectId[];
   bookingsIndex: BookingsIndex;
   price: number;
   numOfGuests: number;
+  authorized?: boolean;
 }
 
 export interface User {
   _id: string;
-  token: string;
   name: string;
   avatar: string;
   contact: string;
   walletId?: string;
 
+  token: string;
+  authorized?: boolean;
+
   income: number;
   bookings: ObjectId[];
   listings: ObjectId[];
-  authorized?: boolean;
 }
 
 export interface Database {

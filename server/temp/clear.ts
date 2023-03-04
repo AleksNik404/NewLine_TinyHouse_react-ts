@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import * as dotenv from "dotenv";
 dotenv.config();
 import { connectDB } from "../src/database";
@@ -16,7 +17,7 @@ const clear = async () => {
 
     console.info(`[clear] : success`);
   } catch (error) {
-    console.log(error);
+    console.log(`[clear] : error: `, error);
 
     throw new Error("failed to clear database");
   }

@@ -4,12 +4,14 @@
 import gql from "graphql-tag";
 
 export const typeDefs = gql`
-  type Viewer {
-    id: ID
-    token: String
-    avatar: String
-    hasWallet: Boolean
-    didRequest: Boolean!
+  enum ListingType {
+    APARTMENT
+    HOUSE
+  }
+
+  enum ListingsFilter {
+    PRICE_LOW_TO_HIGH
+    PRICE_HIGH_TO_LOW
   }
 
   type User {
@@ -18,6 +20,7 @@ export const typeDefs = gql`
     avatar: String!
     contact: String!
     hasWallet: Boolean!
+
     income: Int
     bookings(limit: Int!, page: Int!): Bookings
     listings(limit: Int!, page: Int!): Listings!
@@ -28,22 +31,17 @@ export const typeDefs = gql`
     result: [Booking!]!
   }
 
+  type Listings {
+    total: Int!
+    result: [Listing!]!
+  }
+
   type Booking {
     id: ID!
     listing: Listing!
     tenant: User!
     checkIn: String!
     checkOut: String!
-  }
-
-  type Listings {
-    total: Int!
-    result: [Listing!]!
-  }
-
-  enum ListingType {
-    APARTMENT
-    HOUSE
   }
 
   type Listing {
@@ -54,6 +52,7 @@ export const typeDefs = gql`
     host: User!
     type: ListingType!
     address: String!
+
     city: String!
     bookings(limit: Int!, page: Int!): Bookings
     bookingsIndex: String!
@@ -61,9 +60,19 @@ export const typeDefs = gql`
     numOfGuests: Int!
   }
 
+  type Viewer {
+    id: ID
+    token: String
+    avatar: String
+    hasWallet: Boolean
+    didRequest: Boolean!
+  }
+
   type Query {
     authUrl: String!
     user(id: ID!): User!
+    listing(id: ID!): Listing!
+    listings(filter: ListingsFilter!, limit: Int!, page: Int!): Listings!
   }
 
   # Заменил String на Viewer
