@@ -21,12 +21,14 @@ export const HomeListings = ({ title, listings }: Props) => {
           gutter: 8,
           xs: 1,
           sm: 2,
-          xl: 3,
+          md: 3,
+          lg: 3,
+          xl: 4,
           xxl: 4,
         }}
         dataSource={listings}
         renderItem={(listing) => (
-          <List.Item>
+          <List.Item style={{ padding: "2px 4px" }}>
             <ListingCard listing={listing} />
           </List.Item>
         )}

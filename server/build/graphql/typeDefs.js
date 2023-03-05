@@ -1,9 +1,7 @@
 // - `typeDefs` - строка, представляющая схему GraphQL.
 // - `resolvers` - карта функций, реализующих схему.
-
 import gql from "graphql-tag";
-
-export const typeDefs = gql`
+export const typeDefs = gql `
   enum ListingType {
     APARTMENT
     HOUSE
@@ -32,7 +30,6 @@ export const typeDefs = gql`
   }
 
   type Listings {
-    region: String
     total: Int!
     result: [Listing!]!
   }
@@ -94,3 +91,4 @@ export const typeDefs = gql`
     code: String!
   }
 `;
+//# sourceMappingURL=typeDefs.js.map
