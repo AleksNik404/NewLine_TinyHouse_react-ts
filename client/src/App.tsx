@@ -6,7 +6,7 @@ import { Viewer } from "./lib/gql/graphql";
 import { AppHeader, Home, Host, Listing } from "./sections";
 import { Listings, Login, NotFound, User } from "./sections";
 import { useMutation } from "@apollo/client";
-import { LOG_IN } from "./lib/graphql/mutations/Login/Login";
+import { LOG_IN } from "./lib/graphql/mutations/Login";
 import { AppHeaderSkeleton, ErrorBanner } from "./lib/components";
 
 const initialViewer: Viewer = {

@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import { ErrorBanner } from "../../lib/components";
 import { Viewer } from "../../lib/gql/graphql";
-import { LOG_IN } from "../../lib/graphql/mutations/Login/Login";
+import { LOG_IN } from "../../lib/graphql/mutations/Login";
 import { AUTH_URL } from "../../lib/graphql/queries/Auth";
 import {
   displayErrorMessage,

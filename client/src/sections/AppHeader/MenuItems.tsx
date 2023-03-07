@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { HomeOutlined, LogoutOutlined, UserOutlined } from "@ant-design/icons";
 import { Viewer } from "../../lib/gql/graphql";
 import { useMutation } from "@apollo/client";
-import { LOG_OUT } from "../../lib/graphql/mutations/LogOut/LogOut";
+import { LOG_OUT } from "../../lib/graphql/mutations/LogOut";
 import {
   displayErrorMessage,
   displaySuccessNotification,
