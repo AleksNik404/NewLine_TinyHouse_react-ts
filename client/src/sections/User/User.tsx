@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useQuery } from "@apollo/client";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { Col, Layout, Row } from "antd";
 
 import { USER } from "../../lib/graphql/queries/User";
@@ -15,14 +15,17 @@ const PAGE_LIMIT = 4;
 
 interface Props {
   viewer: Viewer;
+  setViewer: (viewer: Viewer) => void;
 }
 
-const User = ({ viewer }: Props) => {
+const User = ({ viewer, setViewer }: Props) => {
   const { id = "" } = useParams();
+  const [searchParams] = useSearchParams();
+
   const [listingsPage, setListingsPage] = useState(1);
   const [bookingsPage, setBookingsPage] = useState(1);
 
-  const { data, loading, error } = useQuery(USER, {
+  const { data, loading, error, refetch } = useQuery(USER, {
     variables: {
       id,
       bookingsPage,
@@ -31,6 +34,10 @@ const User = ({ viewer }: Props) => {
     },
   });
 
+  const handleUserRefetch = async () => {
+    await refetch();
+  };
+
   const user = data ? data.user : null;
   const viewerIsUser = viewer.id === id;
 
@@ -38,7 +45,13 @@ const User = ({ viewer }: Props) => {
   const userBookings = user ? user.bookings : null;
 
   const userProfileElement = user && (
-    <UserProfile user={user} viewerIsUser={viewerIsUser} />
+    <UserProfile
+      user={user}
+      viewerIsUser={viewerIsUser}
+      viewer={viewer}
+      setViewer={setViewer}
+      handleUserRefetch={handleUserRefetch}
+    />
   );
 
   const userListingsElement = userListings ? (
@@ -59,6 +72,11 @@ const User = ({ viewer }: Props) => {
     />
   ) : null;
 
+  const stripeError = searchParams.get("stripe_error");
+  const stripeErrorBanner = stripeError ? (
+    <ErrorBanner description="We had an issue connecting with Stripe. Please try again soon." />
+  ) : null;
+
   if (loading)
     return (
       <Content className="user">
@@ -75,6 +93,7 @@ const User = ({ viewer }: Props) => {
 
   return (
     <Content className="user">
+      {stripeErrorBanner}
       <Row gutter={12}>
         <Col xs={24}>{userProfileElement}</Col>
         {/* <Col xs={24}>

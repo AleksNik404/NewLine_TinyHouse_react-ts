@@ -13,6 +13,8 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
+    "\n  mutation ConnectStripe($input: ConnectStripeInput!) {\n    connectStripe(input: $input) {\n      hasWallet\n    }\n  }\n": types.ConnectStripeDocument,
+    "\n  mutation DisconnectStripe {\n    disconnectStripe {\n      hasWallet\n    }\n  }\n": types.DisconnectStripeDocument,
     "\n  mutation LogOut {\n    logOut {\n      id\n      token\n      avatar\n      hasWallet\n      didRequest\n    }\n  }\n": types.LogOutDocument,
     "\n  mutation LogIn($input: LogInInput) {\n    logIn(input: $input) {\n      id\n      token\n      avatar\n      hasWallet\n      didRequest\n    }\n  }\n": types.LogInDocument,
     "\n  query AuthUql {\n    authUrl\n  }\n": types.AuthUqlDocument,
@@ -35,6 +37,14 @@ const documents = {
  */
 export function graphql(source: string): unknown;
 
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation ConnectStripe($input: ConnectStripeInput!) {\n    connectStripe(input: $input) {\n      hasWallet\n    }\n  }\n"): (typeof documents)["\n  mutation ConnectStripe($input: ConnectStripeInput!) {\n    connectStripe(input: $input) {\n      hasWallet\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation DisconnectStripe {\n    disconnectStripe {\n      hasWallet\n    }\n  }\n"): (typeof documents)["\n  mutation DisconnectStripe {\n    disconnectStripe {\n      hasWallet\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

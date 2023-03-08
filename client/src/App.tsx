@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Affix, Layout, Spin } from "antd";
 
 import { Viewer } from "./lib/gql/graphql";
-import { AppHeader, Home, Host, Listing } from "./sections";
+import { AppHeader, Home, Host, Listing, Stripe } from "./sections";
 import { Listings, Login, NotFound, User } from "./sections";
 import { useMutation } from "@apollo/client";
 import { LOG_IN } from "./lib/graphql/mutations/Login";
@@ -68,7 +68,14 @@ const App = () => {
           <Route path="listing/:id" element={<Listing />} />
           <Route path="listings/:location?" element={<Listings />} />
           <Route path="login" element={<Login setViewer={setViewer} />} />
-          <Route path="user/:id" element={<User viewer={viewer} />} />
+          <Route
+            path="stripe"
+            element={<Stripe viewer={viewer} setViewer={setViewer} />}
+          />
+          <Route
+            path="user/:id"
+            element={<User viewer={viewer} setViewer={setViewer} />}
+          />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Layout>
