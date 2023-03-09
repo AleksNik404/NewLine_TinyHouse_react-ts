@@ -35,7 +35,7 @@ const mount = async (app: Application) => {
 
   app.use(
     "/api",
-    express.json(),
+    express.json({ limit: "2mb" }),
     expressMiddleware(server, {
       context: async ({ req, res }) => ({ db, req, res }),
     })

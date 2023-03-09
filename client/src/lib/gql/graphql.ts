@@ -33,6 +33,17 @@ export type ConnectStripeInput = {
   code: Scalars['String'];
 };
 
+export type HostListingInput = {
+  address: Scalars['String'];
+  code: Scalars['String'];
+  description: Scalars['String'];
+  image: Scalars['String'];
+  numOfGuests: Scalars['Int'];
+  price: Scalars['Int'];
+  title: Scalars['String'];
+  type: ListingType;
+};
+
 export type Listing = {
   __typename?: 'Listing';
   address: Scalars['String'];
@@ -82,6 +93,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   connectStripe: Viewer;
   disconnectStripe: Viewer;
+  hostListing: Listing;
   logIn: Viewer;
   logOut?: Maybe<Viewer>;
 };
@@ -89,6 +101,11 @@ export type Mutation = {
 
 export type MutationConnectStripeArgs = {
   input: ConnectStripeInput;
+};
+
+
+export type MutationHostListingArgs = {
+  input: HostListingInput;
 };
 
 
@@ -167,6 +184,13 @@ export type DisconnectStripeMutationVariables = Exact<{ [key: string]: never; }>
 
 export type DisconnectStripeMutation = { __typename?: 'Mutation', disconnectStripe: { __typename?: 'Viewer', hasWallet?: boolean | null } };
 
+export type HostListingMutationVariables = Exact<{
+  input: HostListingInput;
+}>;
+
+
+export type HostListingMutation = { __typename?: 'Mutation', hostListing: { __typename?: 'Listing', id: string } };
+
 export type LogOutMutationVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -216,6 +240,7 @@ export type UserQuery = { __typename?: 'Query', user: { __typename?: 'User', id:
 
 export const ConnectStripeDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"ConnectStripe"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ConnectStripeInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"connectStripe"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hasWallet"}}]}}]}}]} as unknown as DocumentNode<ConnectStripeMutation, ConnectStripeMutationVariables>;
 export const DisconnectStripeDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DisconnectStripe"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"disconnectStripe"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hasWallet"}}]}}]}}]} as unknown as DocumentNode<DisconnectStripeMutation, DisconnectStripeMutationVariables>;
+export const HostListingDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"HostListing"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"HostListingInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hostListing"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<HostListingMutation, HostListingMutationVariables>;
 export const LogOutDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"LogOut"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"logOut"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"token"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"}},{"kind":"Field","name":{"kind":"Name","value":"hasWallet"}},{"kind":"Field","name":{"kind":"Name","value":"didRequest"}}]}}]}}]} as unknown as DocumentNode<LogOutMutation, LogOutMutationVariables>;
 export const LogInDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"LogIn"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"LogInInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"logIn"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"token"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"}},{"kind":"Field","name":{"kind":"Name","value":"hasWallet"}},{"kind":"Field","name":{"kind":"Name","value":"didRequest"}}]}}]}}]} as unknown as DocumentNode<LogInMutation, LogInMutationVariables>;
 export const AuthUqlDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"AuthUql"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"authUrl"}}]}}]} as unknown as DocumentNode<AuthUqlQuery, AuthUqlQueryVariables>;

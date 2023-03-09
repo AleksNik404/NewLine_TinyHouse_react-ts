@@ -1,10 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import {
-  Navigate,
-  useNavigate,
-  useParams,
-  useSearchParams,
-} from "react-router-dom";
+import { Navigate, useNavigate, useSearchParams } from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import { Layout, Spin } from "antd";
 
