@@ -14,6 +14,7 @@ import {
   ListingsQuery,
 } from "./types";
 import { Google } from "../../../lib/api/Google";
+import { Cloudinary } from "../../../lib/api/Cloudinary";
 
 const verifyHostListingInput = ({
   title,
@@ -117,19 +118,24 @@ export const listingResolvers = {
       const viewer = await authorize(db, req);
       if (!viewer) throw new Error("viewer cannot be found");
 
-      const { country, admin, city } = await Google.geocode(input.address);
-      if (!country || !admin || !city) {
-        throw new Error("invalid address input");
-      }
+      // Нет geocode. Вместо парсинга 1 строки, буду слать 3
+      //-------------------------------------------------------
+      // const { country, admin, city } = await Google.geocode(input.address);
+      // if (!country || !admin || !city) {
+      //   throw new Error("invalid address input");
+      // }
+
+      const imageUrl = await Cloudinary.upload(input.image);
 
       const newListing = {
         _id: new ObjectId(),
         ...input,
+        image: imageUrl,
         bookings: [],
         bookingsIndex: {},
-        country,
-        admin,
-        city,
+        country: "Russia",
+        admin: "GeoCode off",
+        city: "Pskov",
         host: viewer._id,
       };
 

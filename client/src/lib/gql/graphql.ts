@@ -35,7 +35,6 @@ export type ConnectStripeInput = {
 
 export type HostListingInput = {
   address: Scalars['String'];
-  code: Scalars['String'];
   description: Scalars['String'];
   image: Scalars['String'];
   numOfGuests: Scalars['Int'];

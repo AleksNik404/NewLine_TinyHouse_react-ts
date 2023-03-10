@@ -44,11 +44,11 @@ const Host = ({ viewer }: Props) => {
   const [imageLoading, setImageLoading] = useState(false);
   const [imageBase64Value, setImageBase64Value] = useState<string | null>(null);
 
-  const [hostListing, { loading, data }] = useMutation(HOST_LISTING, {
+  const [hostListing, { loading, data, error }] = useMutation(HOST_LISTING, {
     onCompleted: () => {
       displaySuccessNotification("You've successfully created your listing!");
     },
-    onError: () => {
+    onError: (err) => {
       displayErrorMessage(
         "Sorry! We weren't able to create your listing. Please try again later."
       );
@@ -63,11 +63,8 @@ const Host = ({ viewer }: Props) => {
       return;
     }
 
-    if (
-      // Я без понятия почему вылетает с ошибкой
-      // file.status === "done" &&
-      file.originFileObj
-    ) {
+    // Я без понятия почему вылетает с ошибкой file.status === "done"
+    if (file.originFileObj) {
       getBase64Value(file.originFileObj, (imageBase64Value) => {
         setImageBase64Value(imageBase64Value);
         setImageLoading(false);
@@ -131,7 +128,8 @@ const Host = ({ viewer }: Props) => {
     });
   };
 
-  const onFinishFailed = () => {
+  const onFinishFailed = (errorInfo: any) => {
+    console.log(errorInfo, "errorInfo onFinishFailed");
     displayErrorMessage("Please complete all required form fields!");
   };
 
@@ -154,7 +152,7 @@ const Host = ({ viewer }: Props) => {
 
         <Item
           label="Home Type"
-          name="Home Type"
+          name="type"
           rules={[getRequiredRule("Please select a home type!")]}
         >
           <Radio.Group>
@@ -170,7 +168,7 @@ const Host = ({ viewer }: Props) => {
 
         <Item
           label="Max # of Guests"
-          name="Max # of Guests"
+          name="numOfGuests"
           rules={[getRequiredRule("Please enter the max number of guests!")]}
         >
           <InputNumber min={1} placeholder="4" />
@@ -178,7 +176,7 @@ const Host = ({ viewer }: Props) => {
 
         <Item
           label="Title"
-          name="Title"
+          name="title"
           extra="Max character count of 45"
           rules={[getRequiredRule("Please enter a title for your listing!")]}
         >
@@ -190,7 +188,7 @@ const Host = ({ viewer }: Props) => {
 
         <Item
           label="Description of listing"
-          name="Description of listing"
+          name="description"
           extra="Max character count of 400"
           rules={[
             getRequiredRule("Please enter a description for your listing!"),
@@ -205,7 +203,7 @@ const Host = ({ viewer }: Props) => {
 
         <Item
           label="Address"
-          name="Address"
+          name="address"
           rules={[getRequiredRule("Please enter an address for your listing!")]}
         >
           <Input placeholder="251 North Bristol Avenue" />
@@ -213,7 +211,7 @@ const Host = ({ viewer }: Props) => {
 
         <Item
           label="City/Town"
-          name="City/Town"
+          name="city"
           rules={[
             getRequiredRule(
               "Please enter a city (or region) for your listing!"
@@ -225,7 +223,7 @@ const Host = ({ viewer }: Props) => {
 
         <Item
           label="State/Province"
-          name="State/Province"
+          name="state"
           rules={[getRequiredRule("Please enter a state for your listing!")]}
         >
           <Input placeholder="California" />
@@ -233,7 +231,7 @@ const Host = ({ viewer }: Props) => {
 
         <Item
           label="Zip/Postal Code"
-          name="Zip/Postal Code"
+          name="postalCode"
           rules={[getRequiredRule("Please enter a zip code for your listing!")]}
         >
           <Input placeholder="Please enter a zip code for your listing!" />
@@ -241,7 +239,7 @@ const Host = ({ viewer }: Props) => {
 
         <Item
           label="Image"
-          name="Image"
+          name="image"
           extra="Images have to be under 1MB in size and of type JPG or PNG"
           rules={[
             getRequiredRule("Please enter provide an image for your listing!"),
@@ -269,7 +267,7 @@ const Host = ({ viewer }: Props) => {
 
         <Item
           label="Price"
-          name="Price"
+          name="price"
           extra="All prices in $USD/day"
           rules={[getRequiredRule("Please enter a price for your listing!")]}
         >
@@ -290,7 +288,6 @@ const beforeImageUpload = (file: File) => {
   const fileIsValidImage = ["image/jpeg", "image/png"].includes(file.type);
   const fileIsValidSize = file.size / 1024 / 1024 < 1;
 
-  console.log("1111111111");
   if (!fileIsValidImage) {
     displayErrorMessage("You're only able to upload valid JPG or PNG files!");
     return false;
@@ -302,7 +299,6 @@ const beforeImageUpload = (file: File) => {
     );
     return false;
   }
-  console.log("2222222222", file);
 
   return true;
 };
