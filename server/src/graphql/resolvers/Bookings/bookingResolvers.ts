@@ -1,21 +1,58 @@
 import { Request } from "express";
-import { Booking, Database, Listing } from "../../../lib/types";
+import { Booking, BookingsIndex, Database, Listing } from "../../../lib/types";
 import { CreateBookingArgs } from "./types";
 import { authorize } from "../../../lib/utils/utils";
 import { ObjectId } from "mongodb";
 import { StripeAPI } from "../../../lib/api/Stripe";
+
+const resolveBookingsIndex = (
+  bookingsIndex: BookingsIndex,
+  checkInDate: string,
+  checkOutDate: string
+): BookingsIndex => {
+  let dateCursor = new Date(checkInDate);
+  const checkOut = new Date(checkOutDate);
+  const newBookingsIndex: BookingsIndex = { ...bookingsIndex };
+
+  // ***************************************************
+  // * Цикл на каждый день, с проверкой что день свободен.
+
+  while (dateCursor <= checkOut) {
+    const y = dateCursor.getUTCFullYear();
+    const m = dateCursor.getUTCMonth();
+    const d = dateCursor.getUTCDate();
+
+    if (!newBookingsIndex[y]) newBookingsIndex[y] = {};
+    if (!newBookingsIndex[y][m]) newBookingsIndex[y][m] = {};
+    if (!newBookingsIndex[y][m][d]) newBookingsIndex[y][m][d] = true;
+    else {
+      throw new Error(
+        "selected dates can't overlap dates that have already been booked"
+      );
+    }
+
+    dateCursor = new Date(dateCursor.getTime() + 86400000);
+  }
+
+  return newBookingsIndex;
+};
 
 export const bookingResolvers = {
   Booking: {
     id: (booking: Booking): string => {
       return booking._id.toString();
     },
+
     listing: (
       booking: Booking,
       _args: never,
       { db }: { db: Database }
     ): Promise<Listing | null> => {
       return db.listings.findOne({ _id: booking.listing });
+    },
+
+    tenant: (booking: Booking, _args: unknown, { db }: { db: Database }) => {
+      return db.users.findOne({ _id: booking.tenant });
     },
   },
 
@@ -53,13 +90,14 @@ export const bookingResolvers = {
           throw new Error("check out date can't be before check in date");
         }
 
-        // to be created in the next lesson
-        //
-        // const bookingsIndex = resolveBookingsIndex(
-        //   listing.bookingsIndex,
-        //   checkIn,
-        //   checkOut
-        // );
+        // ***************************************************
+        // * Проверка что даты допустимы
+
+        const bookingsIndex = resolveBookingsIndex(
+          listing.bookingsIndex,
+          checkIn,
+          checkOut
+        );
 
         // ***************************************************
         // * Расчет общей стоимости между заездом и выездом на основе дней
@@ -135,7 +173,7 @@ export const bookingResolvers = {
             _id: listing._id,
           },
           {
-            // $set: { bookingsIndex }, // to be handled in the next lesson
+            $set: { bookingsIndex },
             $push: { bookings: insertedBooking._id },
           }
         );
