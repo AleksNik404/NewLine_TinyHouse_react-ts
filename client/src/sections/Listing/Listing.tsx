@@ -10,12 +10,19 @@ import { Col, Row } from "antd";
 import { ListingBookings } from "./components/ListingBookings";
 import { ListingCreateBooking } from "./components/ListingCreateBooking";
 import { Dayjs } from "dayjs";
+import { Viewer } from "../../lib/gql/graphql";
+import ListingCreateBookingModal from "./components/ListingCreateBookingModal";
 
 const PAGE_LIMIT = 3;
 
-const Listing = () => {
+interface Props {
+  viewer: Viewer;
+}
+
+const Listing = ({ viewer }: Props) => {
   const { id = "" } = useParams();
   const [bookingsPage, setBookingsPage] = useState(1);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const [checkInDate, setCheckInDate] = useState<Dayjs | null>(null);
   const [checkOutDate, setCheckOutDate] = useState<Dayjs | null>(null);
@@ -60,13 +67,29 @@ const Listing = () => {
     />
   ) : null;
 
+  const listingCreateBookingModalElement = listing &&
+    checkInDate &&
+    checkOutDate && (
+      <ListingCreateBookingModal
+        price={listing.price}
+        modalVisible={modalVisible}
+        checkInDate={checkInDate}
+        checkOutDate={checkOutDate}
+        setModalVisible={setModalVisible}
+      />
+    );
+
   const listingCreateBookingElement = listing && (
     <ListingCreateBooking
+      viewer={viewer}
+      host={listing.host}
+      bookingsIndex={listing.bookingsIndex}
       price={listing.price}
       checkInDate={checkInDate}
       setCheckInDate={setCheckInDate}
       checkOutDate={checkOutDate}
       setCheckOutDate={setCheckOutDate}
+      setModalVisible={setModalVisible}
     />
   );
 
@@ -81,6 +104,7 @@ const Listing = () => {
           {listingCreateBookingElement}
         </Col>
       </Row>
+      {listingCreateBookingModalElement}
     </Content>
   );
 };
