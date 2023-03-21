@@ -1,17 +1,17 @@
-import React from "react";
-import { useQuery } from "@apollo/client";
-import { Affix, Layout, List, Typography } from "antd";
+import React from 'react';
+import { useQuery } from '@apollo/client';
+import { Affix, Layout, List, Typography } from 'antd';
 
-import { ListingsFilter } from "../../lib/gql/graphql";
-import { LISTINGS } from "../../lib/graphql/queries/Listings";
-import { ErrorBanner, ListingCard } from "../../lib/components";
-import { Link, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { ListingsFilter } from '../../lib/gql/graphql';
+import { LISTINGS } from '../../lib/graphql/queries/Listings';
+import { ErrorBanner, ListingCard } from '../../lib/components';
+import { Link, useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import {
   ListingsFilters,
   ListingsPagination,
   ListingsSkeleton,
-} from "./components";
+} from './components';
 
 const { Content } = Layout;
 const { Title, Paragraph, Text } = Typography;
@@ -46,7 +46,7 @@ const Listings = () => {
 
   if (loading) {
     return (
-      <Content className="listings">
+      <Content className='listings'>
         <ListingsSkeleton />
       </Content>
     );
@@ -54,7 +54,7 @@ const Listings = () => {
 
   if (error) {
     return (
-      <Content className="listings">
+      <Content className='listings'>
         <ErrorBanner description="We either couldn't find anything matching your search or have encountered an error. If you're searching for a unique location, try searching again with more common keywords." />
         <ListingsSkeleton />
       </Content>
@@ -91,7 +91,7 @@ const Listings = () => {
           }}
           dataSource={listings.result}
           renderItem={(listing) => (
-            <List.Item style={{ padding: "2px 4px" }}>
+            <List.Item style={{ padding: '2px 4px' }}>
               <ListingCard listing={listing} />
             </List.Item>
           )}
@@ -100,24 +100,24 @@ const Listings = () => {
     ) : (
       <div>
         <Paragraph>
-          It appears that no listings have yet been created for{" "}
+          It appears that no listings have yet been created for{' '}
           <Text mark>"{listingsRegion}"</Text>
         </Paragraph>
         <Paragraph>
-          Be the first person to create a{" "}
-          <Link to="/host">listing in this area</Link>!
+          Be the first person to create a{' '}
+          <Link to='/host'>listing in this area</Link>!
         </Paragraph>
       </div>
     );
 
   const listingsRegionElement = listingsRegion ? (
-    <Title level={3} className="listings__title">
+    <Title level={3} className='listings__title'>
       Results for "{listingsRegion}"
     </Title>
   ) : null;
 
   return (
-    <Content className="listings">
+    <Content className='listings'>
       {listingsRegionElement}
       {listingsSectionElement}
     </Content>
